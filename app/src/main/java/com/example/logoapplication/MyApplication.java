@@ -39,6 +39,7 @@ public class MyApplication extends Application {
         Realm.init(this);
         instance = this;
         App app = new App(new AppConfiguration.Builder("logo-iefok").build());
+        System.out.println("ssss");
 
         StrictMode.ThreadPolicy policy =
                 new StrictMode.ThreadPolicy.Builder().permitAll().build();
