@@ -5,48 +5,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
-    android:layout_gravity="center_horizontal">
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="20dp">
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/letterItem"
-            android:layout_height="150dp"
             android:layout_width="150dp"
-            app:cardCornerRadius="15dp"
+            android:layout_height="150dp"
             android:layout_margin="15dp"
-            app:cardBackgroundColor="@color/green_dark"
-            android:foregroundTint="@color/cardview_dark_background"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:background="@drawable/gradient_card"
+            app:cardCornerRadius="15dp">
+
             <TextView
                 android:id="@+id/letter_textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="80dp"
-                android:text="Р" />
+                android:text="Р"
+                android:textSize="80dp" />
         </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/letterItem2"
-            android:layout_height="150dp"
             android:layout_width="150dp"
-            app:cardCornerRadius="15dp"
+            android:layout_height="150dp"
             android:layout_margin="15dp"
-            app:cardBackgroundColor="@color/green_dark"
-            android:foregroundTint="@color/cardview_dark_background"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:foregroundTint="@color/cardview_dark_background"
+            app:cardBackgroundColor="@color/green_dark"
+            app:cardCornerRadius="15dp">
+
             <TextView
                 android:id="@+id/letter1_textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="80dp"
-                android:text="Л" />
+                android:text="Л"
+                android:textSize="80dp" />
         </com.google.android.material.card.MaterialCardView>
     </TableRow>
 </TableLayout>

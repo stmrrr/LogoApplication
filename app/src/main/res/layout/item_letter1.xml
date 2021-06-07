@@ -15,14 +15,13 @@
         android:layout_width="150dp"
         app:cardCornerRadius="15dp"
         android:layout_margin="15dp"
-        app:cardBackgroundColor="@color/green_dark"
-        android:foregroundTint="@color/cardview_dark_background"
         android:clickable="true"
         android:focusable="true">
         <TextView
             android:id="@+id/letter_textViewnew"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/gradient_card2"
             android:gravity="center"
             android:textSize="80dp"
             android:text="Р" />
