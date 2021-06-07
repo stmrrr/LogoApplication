@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         app:cardCornerRadius="15dp"
-        app:cardBackgroundColor="@color/blue_dark"
         android:foregroundTint="@color/cardview_dark_background"
         android:clickable="true"
         android:focusable="true">
@@ -21,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/gradient_card"
 
         >
         <TextView
@@ -28,17 +28,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
+            android:textStyle="bold"
             android:textSize="25dp"
-            android:padding="10dp"
+            android:padding="15dp"
+            android:textColor="@color/grey_light"
             />
 
         <TextView
             android:id="@+id/sectionDescription"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:padding="10dp"
+            android:padding="15dp"
             android:text="Description"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="@color/grey_light"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
 
