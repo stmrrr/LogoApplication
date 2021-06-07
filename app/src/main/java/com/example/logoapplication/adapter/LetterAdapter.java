@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.logoapplication.R;
 import com.example.logoapplication.entities.Section;
-import com.example.logoapplication.entities.SubSection;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -44,7 +43,6 @@ public class LetterAdapter extends RecyclerView.Adapter<LetterAdapter.LetterView
             String name = section.getName();
             String[] arr = name.split("-");
             letter1.setText(arr[0]);
-            //letter2.setText(arr[1]);
         }
     }
 

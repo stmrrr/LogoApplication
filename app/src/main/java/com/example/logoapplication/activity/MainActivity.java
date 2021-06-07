@@ -53,9 +53,14 @@ public class MainActivity extends AppCompatActivity {
         public void onClickSection(int position) {
             Section section = sectionAdapter.getSection(position);
             ObjectId id = section.getId();
-            String mark = section.getMark();
+            Boolean isEnd = section.getEnd();
             Log.v("INFO", id.toString());
-            openSubSection(id, mark);
+            if(isEnd){
+                openExercise(id);
+            }else {
+                String mark = section.getMark();
+                openSubSection(id, mark);
+            }
         }
     };
 
@@ -90,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, SubSectionActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("mark", mark);
+        startActivity(intent);
+    }
+
+    public void openExercise(ObjectId id){
+        Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 

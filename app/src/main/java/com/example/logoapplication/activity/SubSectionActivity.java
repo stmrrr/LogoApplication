@@ -3,29 +3,23 @@ package com.example.logoapplication.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewManager;
 import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.logoapplication.MyApplication;
 import com.example.logoapplication.R;
 import com.example.logoapplication.adapter.LetterAdapter;
 import com.example.logoapplication.adapter.SectionAdapter;
 import com.example.logoapplication.adapter.SectionAdapterInterface;
 import com.example.logoapplication.adapter.SectionClickListener;
 import com.example.logoapplication.crud.SectionCRUD;
-import com.example.logoapplication.crud.SubSectionCRUD;
 import com.example.logoapplication.entities.Section;
-import com.example.logoapplication.entities.SubSection;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -41,8 +35,13 @@ public class SubSectionActivity extends AppCompatActivity {
         public void onClickSection(int position) {
             Section section = sectionAdapter.getSection(position);
             ObjectId id = section.getId();
-            String mark = section.getMark();
-            openSubSection(id, mark);
+            Boolean isEnd = section.getEnd();
+            if(isEnd){
+                openExercise(id);
+            }else {
+                String mark = section.getMark();
+                openSubSection(id, mark);
+            }
         }
     };
 
@@ -53,6 +52,12 @@ public class SubSectionActivity extends AppCompatActivity {
             sectionAdapter.setSections(sections);
         }
     };
+
+    public void openExercise(ObjectId id){
+        Intent intent = new Intent(SubSectionActivity.this, ExerciseActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
