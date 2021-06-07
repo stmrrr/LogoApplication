@@ -20,13 +20,22 @@
       android:id="@+id/include"
       layout="@layout/toolbar_layout">
   </include>
- <androidx.recyclerview.widget.RecyclerView
-     android:id="@+id/recyclerViewSection"
-     android:layout_width="match_parent"
-     android:layout_height="661dp"
-     app:layout_constraintBottom_toBottomOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-     tools:layout_editor_absoluteX="1dp" />
+
+  <ProgressBar
+      android:id="@+id/loading_spinner"
+      android:layout_width="102dp"
+      android:layout_height="89dp"
+      android:layout_gravity="center"
+      android:indeterminateTintMode="src_atop"/>
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recyclerViewSection"
+      android:layout_width="match_parent"
+      android:layout_height="600dp"
+      android:scrollbars="vertical"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+      tools:layout_editor_absoluteX="1dp" />
 
  </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

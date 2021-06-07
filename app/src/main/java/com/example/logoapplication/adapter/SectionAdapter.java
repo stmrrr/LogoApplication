@@ -15,13 +15,9 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionsViewHolder>{
+public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionsViewHolder> implements SectionAdapterInterface{
     private List<Section> sections;
-    private SectionClickListener sectionClickListener;
-
-    public interface  SectionClickListener{
-        void onClickSection(int position);
-    }
+    private final SectionClickListener sectionClickListener;
 
     class SectionsViewHolder extends RecyclerView.ViewHolder{
         TextView title;
@@ -57,11 +53,13 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.Sections
         sections = new ArrayList<>();
     }
 
+    @Override
     public void setSections(List<Section> sections) {
         this.sections = sections;
         notifyDataSetChanged();
     }
 
+    @Override
     public Section getSection(int position){
         return sections.get(position);
     }

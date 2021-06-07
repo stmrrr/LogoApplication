@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.logoapplication.MyApplication;
 import com.example.logoapplication.R;
 import com.example.logoapplication.adapter.ExercisesAdapter;
-import com.example.logoapplication.adapter.SubSectionAdapter;
 import com.example.logoapplication.crud.ExerciseCRUD;
 import com.example.logoapplication.entities.Exercise;
 
