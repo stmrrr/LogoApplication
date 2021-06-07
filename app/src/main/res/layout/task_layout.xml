@@ -59,7 +59,7 @@
                 android:layout_gravity="right"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginVertical="10dp"
-                android:text="Выполнено"
+                android:text="Выполнить"
                 app:backgroundTint="@color/purple_main"
                 app:iconTint="@color/grey_dark"></com.google.android.material.button.MaterialButton>
         </LinearLayout>
