@@ -22,7 +22,7 @@ import org.bson.types.ObjectId;
 
 public class ExerciseActivity extends AppCompatActivity {
 
-    Toolbar maintoolbar;
+
     RecyclerView recyclerView;
     ExercisesAdapter exercisesAdapter;
 
@@ -39,9 +39,6 @@ public class ExerciseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercises_layout);
-        maintoolbar = findViewById(R.id.maintoolbar);
-        setActionBar(maintoolbar);
-        maintoolbar.setTitle("Упражнения");
         recyclerView = findViewById(R.id.recyclerViewExersises);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));

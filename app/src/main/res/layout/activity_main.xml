@@ -21,6 +21,7 @@
       layout="@layout/toolbar_layout">
   </include>
 
+
   <ProgressBar
       android:id="@+id/loading_spinner"
       android:layout_width="102dp"

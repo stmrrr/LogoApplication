@@ -33,7 +33,6 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public class SubSectionActivity extends AppCompatActivity {
-    Toolbar maintoolbar;
     SectionAdapterInterface sectionAdapter;
     RecyclerView recyclerView;
 
@@ -60,9 +59,6 @@ public class SubSectionActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subsection_layout);
-        maintoolbar = findViewById(R.id.maintoolbar);
-        setActionBar(maintoolbar);
-        maintoolbar.setTitle("Подразделы");
         recyclerView = findViewById(R.id.recyclerViewSubSection);
         String mark = getIntent().getStringExtra("mark");
         if (mark.equals("sounds")){

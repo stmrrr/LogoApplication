@@ -2,10 +2,13 @@ package com.example.logoapplication.activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,7 +43,6 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class MainActivity extends AppCompatActivity {
-    Toolbar maintoolbar;
     SectionAdapter sectionAdapter;
     RecyclerView recyclerView;
     ProgressBar progressBar;
@@ -67,16 +69,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @SuppressLint("WrongViewCast")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Realm.init(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        maintoolbar = (Toolbar) findViewById(R.id.maintoolbar);
         progressBar = findViewById(R.id.loading_spinner);
-        setActionBar(maintoolbar);
-        maintoolbar.setTitle("Главная страница");
         recyclerView = findViewById(R.id.recyclerViewSection);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
