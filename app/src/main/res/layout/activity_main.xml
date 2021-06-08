@@ -17,7 +17,7 @@
      tools:ignore="MissingConstraints">
 
   <include
-      android:id="@+id/include"
+      android:id="@+id/maintoolbar"
       layout="@layout/toolbar_layout">
   </include>
 
@@ -26,8 +26,7 @@
       android:id="@+id/loading_spinner"
       android:layout_width="102dp"
       android:layout_height="89dp"
-      android:layout_gravity="center"
-      android:indeterminateTintMode="src_atop"/>
+      android:layout_gravity="center"/>
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/recyclerViewSection"
