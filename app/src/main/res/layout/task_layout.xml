@@ -3,65 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-
-    android:orientation="vertical">
+    android:background="@drawable/gradient_background"
+    android:orientation="vertical"
+    >
 
     <include
         android:id="@+id/include"
         layout="@layout/toolbar_layout"></include>
-
     <androidx.cardview.widget.CardView
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        app:cardCornerRadius="15dp">
-
+        android:layout_margin="15dp"
+        app:cardCornerRadius="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/gradient_card"
-            android:orientation="vertical">
-
+            android:padding="25dp"
+            android:orientation="vertical"
+            android:background="@color/grey_light">
             <TextView
-                android:id="@+id/taskTitle"
+                android:id="@+id/taskName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="Упражнение 1"
-                android:textAlignment="textStart"
-                android:textColor="@color/grey_light"
-                android:textSize="25dp" />
-
-            <ScrollView
-                android:id="@+id/scroller_id"
-                android:layout_width="fill_parent"
+                android:textSize="30dp"
+                android:text="Артикуляционная разминка"
+                >
+            </TextView>
+            <TextView
+                android:id="@+id/task"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fillViewport="true"
-                android:scrollbars="vertical">
-
-                <TextView
-                    android:id="@+id/taskDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxHeight="350dp"
-                    android:padding="15dp"
-                    android:text="Содержание"
-                    android:textColor="@color/grey_light"
-                    android:textSize="20sp" />
-            </ScrollView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/task_button_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginHorizontal="15dp"
                 android:layout_marginVertical="10dp"
-                android:text="Выполнить"
-                app:backgroundTint="@color/purple_main"
-                app:iconTint="@color/grey_dark"></com.google.android.material.button.MaterialButton>
+                android:textSize="20dp"
+                android:text="Положите одну руку на грудь, а другую — на живот. Дышите так, чтобы поднималась только рука, которая лежит на груди. Задержите воздух и затем выдохните его через рот. Повторите несколько раз. После дышите так, чтобы поднималась только рука, лежащая на животе. Грудь не должна двигаться. Повторите несколько раз. Теперь попробуйте по очереди дышать так, чтобы сначала поднималась рука, лежащая на животе, а затем — рука, лежащая на груди.">
+            </TextView>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>
