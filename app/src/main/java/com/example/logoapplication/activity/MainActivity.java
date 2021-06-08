@@ -62,12 +62,13 @@ public class MainActivity extends AppCompatActivity {
             Section section = sectionAdapter.getSection(position);
             ObjectId id = section.getId();
             Boolean isEnd = section.getEnd();
+            String name = section.getName();
             Log.v("INFO", id.toString());
             if(isEnd){
                 openExercise(id);
             }else {
                 String mark = section.getMark();
-                openSubSection(id, mark);
+                openSubSection(id, mark, name);
             }
         }
     };
@@ -104,10 +105,11 @@ public class MainActivity extends AppCompatActivity {
         initializeDatabaseConnection();
     }
 
-    public void openSubSection(ObjectId id, String mark){
+    public void openSubSection(ObjectId id, String mark, String name){
         Intent intent = new Intent(MainActivity.this, SubSectionActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("mark", mark);
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 
