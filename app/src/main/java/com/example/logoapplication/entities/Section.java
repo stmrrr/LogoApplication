@@ -9,9 +9,9 @@ public class Section {
     private String description;
     private ObjectId id_main_section;
     private String mark;
-    private boolean isEnd;
+    private Boolean isEnd;
 
-    public Section(ObjectId id, String name, String description, ObjectId id_main_section, String mark, boolean isEnd) {
+    public Section(ObjectId id, String name, String description, ObjectId id_main_section, String mark, Boolean isEnd) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -63,11 +63,11 @@ public class Section {
         this.mark = mark;
     }
 
-    public boolean getEnd() {
+    public Boolean getIsEnd() {
         return isEnd;
     }
 
-    public void setEnd(boolean end) {
+    public void setIsEnd(Boolean end) {
         isEnd = end;
     }
 

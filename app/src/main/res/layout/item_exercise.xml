@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_gravity="center_horizontal">
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="10dp">
     <androidx.cardview.widget.CardView
         android:layout_width="350dp"
         android:layout_height="wrap_content"
@@ -33,7 +34,8 @@
                 android:paddingHorizontal="15dp"
                 android:text="Содержание"
                 android:textColor="@color/grey_light"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

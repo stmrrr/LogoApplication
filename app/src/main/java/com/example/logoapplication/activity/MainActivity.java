@@ -2,8 +2,6 @@ package com.example.logoapplication.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
         public void onClickSection(int position) {
             Section section = sectionAdapter.getSection(position);
             ObjectId id = section.getId();
-            Boolean isEnd = section.getEnd();
+            Boolean isEnd = section.getIsEnd();
             String name = section.getName();
             Log.v("INFO", id.toString());
             if(isEnd){
-                openExercise(id);
+                openExercise(id, name);
             }else {
                 String mark = section.getMark();
                 openSubSection(id, mark, name);
@@ -113,9 +110,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openExercise(ObjectId id){
-        Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+    public void openExercise(ObjectId id, String name){
+        Intent intent = new Intent(MainActivity.this, ExercisesActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 

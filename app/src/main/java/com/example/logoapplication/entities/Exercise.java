@@ -7,17 +7,17 @@ public class Exercise {
     private int number;
     private String description;
     private ObjectId subsectionID;
-    private String name_post;
+    private String picture;
 
     public Exercise() {
     }
 
-    public Exercise(ObjectId id, int number, String description, ObjectId subSectionId, String name_post) {
+    public Exercise(ObjectId id, int number, String description, ObjectId subSectionId, String picture) {
         this.id = id;
         this.number = number;
         this.description = description;
         this.subsectionID = subSectionId;
-        this.name_post = name_post;
+        this.picture = picture;
     }
 
     public ObjectId getId() {
@@ -52,11 +52,11 @@ public class Exercise {
         this.subsectionID = subsectionID;
     }
 
-    public String getName_post() {
-        return name_post;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setName_post(String name_post) {
-        this.name_post = name_post;
+    public void setPicture(String name_post) {
+        this.picture = name_post;
     }
 }

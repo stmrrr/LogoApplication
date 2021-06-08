@@ -13,7 +13,8 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints"
         android:divider="@null"
-        android:showDividers="none">
+        android:showDividers="none"
+        android:scrollbars="vertical">
 
         <include
             android:id="@+id/toolbar_subsection"
@@ -24,16 +25,55 @@
             android:layout_width="102dp"
             android:layout_height="89dp"
             android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/R"
+            android:text="Автоматизация звука Р"
+            android:layout_marginStart="15dp"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewSubSection"
+            android:id="@+id/recyclerViewRsection"
             android:layout_width="wrap_content"
-            android:layout_height="600dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="1dp"
             android:divider="@null"
             android:showDividers="none"
             android:dividerHeight="0dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/L"
+            android:text="Автоматизация звука Л"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewLsection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="1dp"
+            android:divider="@null"
+            android:showDividers="none"
+            android:dividerHeight="0dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:id="@+id/S"
+            android:text="Шипящие звуки"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSSounds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="1dp"
+            android:divider="@null"
+            android:showDividers="none"
+            android:dividerHeight="0dp"/>
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

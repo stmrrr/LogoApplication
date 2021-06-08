@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -34,23 +35,66 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SubSectionActivity extends AppCompatActivity {
-    SectionAdapterInterface sectionAdapter;
-    RecyclerView recyclerView;
+    SectionAdapterInterface sectionRAdapter;
+    SectionAdapterInterface sectionLAdapter;
+    SectionAdapterInterface sectionSAdapter;
+    RecyclerView recyclerViewRSection;
+    RecyclerView recyclerViewLSection;
+    RecyclerView recyclerViewSSection;
+    TextView r;
+    TextView s;
+    TextView l;
     ProgressBar progressBar;
     Toolbar toolbar;
+    String mark;
 
-    SectionClickListener sectionClickListener = new SectionClickListener(){
+    SectionClickListener sectionClickRListener = new SectionClickListener(){
         @Override
         public void onClickSection(int position) {
-            Section section = sectionAdapter.getSection(position);
+            Section section = sectionRAdapter.getSection(position);
             ObjectId id = section.getId();
             String name = section.getName();
-            boolean isEnd = section.getEnd();
+            Boolean isEnd = section.getIsEnd();
             if(isEnd){
-                openExercise(id);
+                openExercise(id, name);
+            }else {
+                String mark = section.getMark();
+                openSubSection(id, mark, name);
+            }
+        }
+    };
+
+    SectionClickListener sectionClickLListener = new SectionClickListener(){
+        @Override
+        public void onClickSection(int position) {
+            Section section = sectionLAdapter.getSection(position);
+            ObjectId id = section.getId();
+            String name = section.getName();
+            Boolean isEnd = section.getIsEnd();
+            if(isEnd){
+                openExercise(id, name);
+            }else {
+                String mark = section.getMark();
+                openSubSection(id, mark, name);
+            }
+        }
+    };
+
+    SectionClickListener sectionClickSListener = new SectionClickListener(){
+        @Override
+        public void onClickSection(int position) {
+            Section section = sectionSAdapter.getSection(position);
+            ObjectId id = section.getId();
+            String name = section.getName();
+            Boolean isEnd = section.getIsEnd();
+            if(isEnd){
+                openExercise(id, name);
             }else {
                 String mark = section.getMark();
                 openSubSection(id, mark, name);
@@ -61,16 +105,37 @@ public class SubSectionActivity extends AppCompatActivity {
     SectionCRUD.SectionChange sectionChange = new SectionCRUD.SectionChange() {
         @Override
         public void onChange(List<Section> sections) {
-            recyclerView.setVisibility(View.VISIBLE);
+            List<Section> sSounds = new ArrayList<>();
             progressBar.setVisibility(View.INVISIBLE);
-            ((ViewManager)progressBar.getParent()).removeView(progressBar);
-            sectionAdapter.setSections(sections);
+            ((ViewManager) progressBar.getParent()).removeView(progressBar);
+            recyclerViewRSection.setVisibility(View.VISIBLE);
+            if(mark.equals("sounds")){
+                recyclerViewLSection.setVisibility(View.VISIBLE);
+                recyclerViewSSection.setVisibility(View.VISIBLE);
+                for(Section section : sections){
+                    switch (section.getDescription()){
+                        case "Автоматизация звука Р":
+                            sectionRAdapter.setSections(Collections.singletonList(section));
+                            break;
+                        case "Автоматизация звука Л":
+                            sectionLAdapter.setSections(Collections.singletonList(section));
+                            break;
+                        case "Шипящие звуки":
+                            sSounds.add(section);
+                            break;
+                    }
+                }
+                sectionSAdapter.setSections(sSounds);
+            } else {
+                sectionRAdapter.setSections(sections);
+            }
         }
     };
 
-    public void openExercise(ObjectId id){
-        Intent intent = new Intent(SubSectionActivity.this, ExerciseActivity.class);
+    public void openExercise(ObjectId id, String name){
+        Intent intent = new Intent(SubSectionActivity.this, ExercisesActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 
@@ -81,7 +146,7 @@ public class SubSectionActivity extends AppCompatActivity {
         setContentView(R.layout.subsection_layout);
         progressBar = findViewById(R.id.loading_spinner_subsection);
         String name = getIntent().getStringExtra("name");
-        String mark = getIntent().getStringExtra("mark");
+        mark = getIntent().getStringExtra("mark");
         if(mark.equals("sound")){
             name = "Звук " + name;
         }
@@ -91,16 +156,25 @@ public class SubSectionActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             initializeMenu();
         }
-        recyclerView = findViewById(R.id.recyclerViewSubSection);
+        recyclerViewRSection = findViewById(R.id.recyclerViewRsection);
+        recyclerViewLSection = findViewById(R.id.recyclerViewLsection);
+        recyclerViewSSection = findViewById(R.id.recyclerViewSSounds);
+        s = findViewById(R.id.S);
+        r = findViewById(R.id.R);
+        l = findViewById(R.id.L);
         if (mark.equals("sounds")){
-            sectionAdapter = new LetterAdapter(sectionClickListener);
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            sortSoundsAndInitializeRecyclerView();
         }else{
-            sectionAdapter = new SectionAdapter(sectionClickListener);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+            ((ViewManager)s.getParent()).removeView(s);
+            ((ViewManager)r.getParent()).removeView(r);
+            ((ViewManager)l.getParent()).removeView(l);
+            ((ViewManager)recyclerViewLSection.getParent()).removeView(recyclerViewLSection);
+            ((ViewManager)recyclerViewSSection.getParent()).removeView(recyclerViewSSection);
+            sectionRAdapter = new SectionAdapter(sectionClickRListener);
+            recyclerViewRSection.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+            recyclerViewRSection.setAdapter((RecyclerView.Adapter)sectionRAdapter);
         }
-        recyclerView.setAdapter((RecyclerView.Adapter)sectionAdapter);
-        recyclerView.setVisibility(View.INVISIBLE);
+        recyclerViewRSection.setVisibility(View.INVISIBLE);
 
         ObjectId id = (ObjectId) getIntent().getSerializableExtra("id");
         SectionCRUD sectionCRUD = new SectionCRUD(sectionChange);
@@ -148,5 +222,23 @@ public class SubSectionActivity extends AppCompatActivity {
                                 .withTextColor(Color.WHITE)
                 )
                 .build();
+    }
+
+    public void sortSoundsAndInitializeRecyclerView(){
+        sectionRAdapter = new LetterAdapter(sectionClickRListener);
+        sectionLAdapter = new LetterAdapter(sectionClickLListener);
+        sectionSAdapter = new LetterAdapter(sectionClickSListener);
+
+        recyclerViewRSection.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerViewLSection.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerViewSSection.setLayoutManager(new GridLayoutManager(this, 2));
+
+        recyclerViewRSection.setAdapter((RecyclerView.Adapter)sectionRAdapter);
+        recyclerViewLSection.setAdapter((RecyclerView.Adapter)sectionLAdapter);
+        recyclerViewSSection.setAdapter((RecyclerView.Adapter)sectionSAdapter);
+
+        recyclerViewRSection.setVisibility(View.INVISIBLE);
+        recyclerViewLSection.setVisibility(View.INVISIBLE);
+        recyclerViewSSection.setVisibility(View.INVISIBLE);
     }
 }

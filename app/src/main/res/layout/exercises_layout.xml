@@ -14,9 +14,14 @@
         tools:ignore="MissingConstraints">
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/toolbar_exercises"
             layout="@layout/toolbar_layout">
         </include>
+        <ProgressBar
+            android:id="@+id/spinner_exercises"
+            android:layout_width="102dp"
+            android:layout_height="89dp"
+            android:layout_gravity="center"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewExersises"
             android:layout_width="match_parent"

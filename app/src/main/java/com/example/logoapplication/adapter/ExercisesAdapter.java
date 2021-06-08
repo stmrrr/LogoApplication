@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.ExerciseViewHolder> {
     private List<Exercise> exercises;
-    private ExerciseOnClickListener exerciseOnClickListener;
+    private final ExerciseOnClickListener exerciseOnClickListener;
 
 
     public interface  ExerciseOnClickListener{
@@ -29,8 +29,8 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
 
         public ExerciseViewHolder(@NonNull View itemView){
             super(itemView);
-            title = itemView.findViewById(R.id.exerciseTitle);
-            description = itemView.findViewById(R.id.exerciseDescription);
+            title = itemView.findViewById(R.id.taskTitle);
+            description = itemView.findViewById(R.id.taskDescription);
 
             itemView.setOnClickListener(v -> {
                 if(exerciseOnClickListener != null){
@@ -42,7 +42,8 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
         public void bind(Exercise exercise){
             String titles = "Упражнение " + exercise.getNumber();
             title.setText(titles);
-            description.setText(exercise.getDescription());
+            String descriptionStr = exercise.getDescription().substring(0, 100)+"...";
+            description.setText(descriptionStr);
         }
     }
 

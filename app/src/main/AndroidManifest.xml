@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SubSectionActivity" />
-        <activity android:name=".activity.ExerciseActivity" />
+        <activity android:name=".activity.ExercisesActivity" />
+        <activity android:name=".activity.TaskActivity" />
     </application>
 
 </manifest>
