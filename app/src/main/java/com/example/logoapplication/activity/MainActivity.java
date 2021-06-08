@@ -1,7 +1,7 @@
 package com.example.logoapplication.activity;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.ProgressBar;
-import android.widget.Toolbar;
 
 import com.example.logoapplication.MyApplication;
 import com.example.logoapplication.R;
@@ -24,6 +24,13 @@ import com.example.logoapplication.adapter.SectionAdapter;
 import com.example.logoapplication.adapter.SectionClickListener;
 import com.example.logoapplication.crud.SectionCRUD;
 import com.example.logoapplication.entities.Section;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import org.bson.Document;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     SectionAdapter sectionAdapter;
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    Toolbar toolbar;
     AtomicReference<User> user = new AtomicReference<>();
 
     SectionClickListener sectionClickListener = new SectionClickListener(){
@@ -75,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @SuppressLint("WrongViewCast")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Realm.init(this);
@@ -88,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
         sectionAdapter = new SectionAdapter(sectionClickListener);
         recyclerView.setAdapter(sectionAdapter);
         recyclerView.setVisibility(View.INVISIBLE);
+        toolbar = findViewById(R.id.maintoolbar);
+        if(toolbar!=null){
+            toolbar.setTitle("Главное меню");
+            setSupportActionBar(toolbar);
+            initializeMenu();
+        }
         initializeDatabaseConnection();
     }
 
@@ -126,5 +139,40 @@ public class MainActivity extends AppCompatActivity {
                 mongoClient.getDatabase("logotrener-database");
         MyApplication.getInstance().pojoCodecRegistry = fromRegistries(AppConfiguration.DEFAULT_BSON_CODEC_REGISTRY,
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+    }
+
+    public void initializeMenu(){
+        IProfile profile = new ProfileDrawerItem()
+                .withName("Фамилия Имя Отчество")
+                .withEmail("user@mail.com")
+                .withIcon(R.drawable.ic_baseline_person_24);
+
+        AccountHeader accountHeader = new AccountHeaderBuilder()
+                .withActivity(this)
+                .addProfiles(profile)
+                .withTextColor(Color.WHITE)
+                .build();
+
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withAccountHeader(accountHeader)
+                .withActionBarDrawerToggleAnimated(true)
+                .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
+                .addDrawerItems(
+                        new PrimaryDrawerItem()
+                                .withName("Личный кабинет")
+                                .withIcon(R.drawable.ic_baseline_person_24)
+                                .withTextColor(Color.WHITE)
+                                .withSetSelected(true),
+                        new PrimaryDrawerItem()
+                                .withName("Чаты")
+                                .withIcon(R.drawable.ic_baseline_chat_24)
+                                .withTextColor(Color.WHITE),
+                        new PrimaryDrawerItem()
+                                .withName("Выход")
+                                .withTextColor(Color.WHITE)
+                )
+                .build();
     }
 }
