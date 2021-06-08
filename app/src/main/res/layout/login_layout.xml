@@ -64,11 +64,13 @@
                 android:layout_width="290dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
+                android:id="@+id/loginButton"
                 android:text="ВОЙТИ"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/purple_200"
-                app:backgroundTintMode="add"></com.google.android.material.button.MaterialButton>
+                app:backgroundTintMode="add">
+            </com.google.android.material.button.MaterialButton>
             <TextView
                 android:onClick="Registration"
                 android:layout_width="match_parent"

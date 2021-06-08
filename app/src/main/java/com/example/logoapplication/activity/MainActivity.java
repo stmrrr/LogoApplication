@@ -21,12 +21,14 @@ import com.example.logoapplication.adapter.SectionAdapter;
 import com.example.logoapplication.adapter.SectionClickListener;
 import com.example.logoapplication.crud.SectionCRUD;
 import com.example.logoapplication.entities.Section;
+import com.example.logoapplication.entities.Teacher;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import org.bson.Document;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     AtomicReference<User> user = new AtomicReference<>();
 
-    SectionClickListener sectionClickListener = new SectionClickListener(){
+    SectionClickListener sectionClickListener = new SectionClickListener() {
         @Override
         public void onClickSection(int position) {
             Section section = sectionAdapter.getSection(position);
@@ -61,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
             Boolean isEnd = section.getIsEnd();
             String name = section.getName();
             Log.v("INFO", id.toString());
-            if(isEnd){
+            if (isEnd) {
                 openExercise(id, name);
-            }else {
+            } else {
                 String mark = section.getMark();
                 openSubSection(id, mark, name);
             }
@@ -94,15 +96,19 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(sectionAdapter);
         recyclerView.setVisibility(View.INVISIBLE);
         toolbar = findViewById(R.id.maintoolbar);
-        if(toolbar!=null){
+        if (toolbar != null) {
             toolbar.setTitle("Главное меню");
             setSupportActionBar(toolbar);
             initializeMenu();
         }
-        initializeDatabaseConnection();
+        if (MyApplication.getInstance().mongoDatabase == null) {
+            initializeDatabaseConnection();
+        } else {
+            getSections();
+        }
     }
 
-    public void openSubSection(ObjectId id, String mark, String name){
+    public void openSubSection(ObjectId id, String mark, String name) {
         Intent intent = new Intent(MainActivity.this, SubSectionActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("mark", mark);
@@ -110,30 +116,35 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openExercise(ObjectId id, String name){
+    public void openExercise(ObjectId id, String name) {
         Intent intent = new Intent(MainActivity.this, ExercisesActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("name", name);
         startActivity(intent);
     }
 
-    public void initializeDatabaseConnection(){
+    public void initializeDatabaseConnection() {
         App app = new App(new AppConfiguration.Builder("logo-iefok").build());
         Credentials anonymousCredentials = Credentials.anonymous();
         app.loginAsync(anonymousCredentials, it -> {
-            if(it.isSuccess()){
+            if (it.isSuccess()) {
                 Log.v("AUTH", "Successfully authenticated anonymously.");
                 user.set(app.currentUser());
                 createDatabase();
-                SectionCRUD sectionCRUD = new SectionCRUD(sectionChange);
-                sectionCRUD.getSections(new Document("id_main_section", null));
+                getSections();
             } else {
                 Log.e("AUTH", it.getError().toString());
             }
         });
     }
 
-    public void createDatabase(){
+    public void getSections() {
+        SectionCRUD sectionCRUD = new SectionCRUD(sectionChange);
+        sectionCRUD.getSections(new Document("id_main_section", null));
+    }
+
+
+    public void createDatabase() {
         MongoClient mongoClient = user.get().getMongoClient("mongodb-atlas");
         MyApplication.getInstance().mongoDatabase =
                 mongoClient.getDatabase("logotrener-database");
@@ -141,39 +152,91 @@ public class MainActivity extends AppCompatActivity {
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
     }
 
-    public void initializeMenu(){
-        IProfile profile = new ProfileDrawerItem()
-                .withName("Фамилия Имя Отчество")
-                .withEmail("user@mail.com")
-                .withIcon(R.drawable.ic_baseline_person_24);
+    public void initializeMenu() {
+        IProfile profile;
+        com.example.logoapplication.entities.User user = MyApplication.getInstance().user;
+        Teacher teacher = MyApplication.getInstance().teacher;
+        if (user != null) {
+            profile = new ProfileDrawerItem()
+                    .withName(user.getName())
+                    .withEmail(user.getEmail())
+                    .withIcon(R.drawable.ic_baseline_person_24);
+        } else if (teacher != null) {
+            profile = new ProfileDrawerItem()
+                    .withName(teacher.getName())
+                    .withEmail(teacher.getEmail())
+                    .withIcon(R.drawable.ic_baseline_person_24);
+        } else {
+            profile = new ProfileDrawerItem()
+                    .withName("Анонимный пользователь")
+                    .withIcon(R.drawable.ic_baseline_person_24);
+        }
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .addProfiles(profile)
                 .withTextColor(Color.WHITE)
                 .build();
-
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withAccountHeader(accountHeader)
-                .withActionBarDrawerToggleAnimated(true)
-                .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
-                .addDrawerItems(
-                        new PrimaryDrawerItem()
-                                .withName("Личный кабинет")
-                                .withIcon(R.drawable.ic_baseline_person_24)
-                                .withTextColor(Color.WHITE)
-                                .withSetSelected(true),
-                        new PrimaryDrawerItem()
-                                .withName("Чаты")
-                                .withIcon(R.drawable.ic_baseline_chat_24)
-                                .withTextColor(Color.WHITE),
-                        new PrimaryDrawerItem()
-                                .withName("Выход")
-                                .withIcon(R.drawable.ic_logout)
-                                .withTextColor(Color.WHITE)
-                )
-                .build();
+        if (user != null || teacher != null) {
+            Drawer result = new DrawerBuilder()
+                    .withActivity(this)
+                    .withToolbar(toolbar)
+                    .withAccountHeader(accountHeader)
+                    .withActionBarDrawerToggleAnimated(true)
+                    .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
+                    .addDrawerItems(
+                            new PrimaryDrawerItem()
+                                    .withName("Личный кабинет")
+                                    .withIcon(R.drawable.ic_baseline_person_24)
+                                    .withTextColor(Color.WHITE),
+                            new PrimaryDrawerItem()
+                                    .withName("Чаты")
+                                    .withIcon(R.drawable.ic_baseline_chat_24)
+                                    .withTextColor(Color.WHITE),
+                            new PrimaryDrawerItem()
+                                    .withName("Выход")
+                                    .withTextColor(Color.WHITE)
+                    )
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            Log.v("AUTH", String.valueOf(position));
+                            if(position == 1){
+                                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                                startActivity(intent);
+                            }
+                            if(position == 3){
+                                MyApplication.getInstance().user = null;
+                                MyApplication.getInstance().teacher = null;
+                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            return true;
+                        }
+                    })
+                    .build();
+        } else {
+            Drawer result = new DrawerBuilder()
+                    .withActivity(this)
+                    .withToolbar(toolbar)
+                    .withAccountHeader(accountHeader)
+                    .withActionBarDrawerToggleAnimated(true)
+                    .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
+                    .addDrawerItems(
+                            new PrimaryDrawerItem()
+                                    .withName("Вход")
+                                    .withIcon(R.drawable.ic_baseline_person_24)
+                                    .withTextColor(Color.WHITE)
+                    )
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            return true;
+                        }
+                    })
+                    .build();
+        }
     }
 }
