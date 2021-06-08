@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/taskTitle"
+                android:id="@+id/exerciseTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
@@ -28,7 +28,7 @@
                 android:textColor="@color/grey_light"
                 android:textSize="25dp" />
             <TextView
-                android:id="@+id/taskDescription"
+                android:id="@+id/exerciseDescription"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:paddingHorizontal="15dp"

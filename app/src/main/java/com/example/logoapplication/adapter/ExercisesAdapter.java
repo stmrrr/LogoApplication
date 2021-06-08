@@ -29,8 +29,8 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
 
         public ExerciseViewHolder(@NonNull View itemView){
             super(itemView);
-            title = itemView.findViewById(R.id.taskTitle);
-            description = itemView.findViewById(R.id.taskDescription);
+            title = itemView.findViewById(R.id.exerciseTitle);
+            description = itemView.findViewById(R.id.exerciseDescription);
 
             itemView.setOnClickListener(v -> {
                 if(exerciseOnClickListener != null){

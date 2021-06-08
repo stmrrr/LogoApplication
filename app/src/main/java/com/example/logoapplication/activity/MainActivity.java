@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
                                 .withTextColor(Color.WHITE),
                         new PrimaryDrawerItem()
                                 .withName("Выход")
+                                .withIcon(R.drawable.ic_logout)
                                 .withTextColor(Color.WHITE)
                 )
                 .build();
