@@ -68,11 +68,11 @@
                 android:text="ВОЙТИ"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/purple_200"
-                app:backgroundTintMode="add">
+                app:backgroundTint="@color/purple_200">
             </com.google.android.material.button.MaterialButton>
             <TextView
                 android:onClick="Registration"
+                android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/purple_main"

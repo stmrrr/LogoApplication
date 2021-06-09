@@ -169,7 +169,8 @@
                     <ImageView
                         android:id="@+id/userDocs1"
                         android:layout_height="170dp"
-                        android:layout_width="match_parent" >
+                        android:layout_width="match_parent"
+                        android:adjustViewBounds="true">
                     </ImageView>
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/redact_button"

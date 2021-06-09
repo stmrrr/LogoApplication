@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.ProgressBar;
@@ -193,7 +194,7 @@ public class SubSectionActivity extends AppCompatActivity {
 
     public void initializeMenu() {
         IProfile profile;
-        User user = MyApplication.getInstance().user;
+        com.example.logoapplication.entities.User user = MyApplication.getInstance().user;
         Teacher teacher = MyApplication.getInstance().teacher;
         if (user != null) {
             profile = new ProfileDrawerItem()
@@ -225,18 +226,51 @@ public class SubSectionActivity extends AppCompatActivity {
                     .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
                     .addDrawerItems(
                             new PrimaryDrawerItem()
+                                    .withName("Главная страница")
+                                    .withIcon(R.drawable.baseline_home_24)
+                                    .withTextColor(Color.WHITE)
+                                    .withSetSelected(false),
+                            new PrimaryDrawerItem()
                                     .withName("Личный кабинет")
                                     .withIcon(R.drawable.ic_baseline_person_24)
                                     .withTextColor(Color.WHITE)
-                                    .withSetSelected(true),
+                                    .withSetSelected(false),
                             new PrimaryDrawerItem()
                                     .withName("Чаты")
                                     .withIcon(R.drawable.ic_baseline_chat_24)
-                                    .withTextColor(Color.WHITE),
+                                    .withTextColor(Color.WHITE)
+                                    .withSetSelected(false),
                             new PrimaryDrawerItem()
                                     .withName("Выход")
+                                    .withIcon(R.drawable.ic_logout)
                                     .withTextColor(Color.WHITE)
+                                    .withSetSelected(false)
                     )
+                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                        @Override
+                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                            Log.v("AUTH", String.valueOf(position));
+                            if(position == 1){
+                                Intent intent = new Intent(SubSectionActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            if(position == 2){
+                                Intent intent = new Intent(SubSectionActivity.this, ProfileActivity.class);
+                                startActivity(intent);
+                            }
+                            if(position == 3){
+                                Intent intent = new Intent(SubSectionActivity.this, ChatListActivity.class);
+                                startActivity(intent);
+                            }
+                            if(position == 4){
+                                MyApplication.getInstance().user = null;
+                                MyApplication.getInstance().teacher = null;
+                                Intent intent = new Intent(SubSectionActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            return true;
+                        }
+                    })
                     .build();
         } else {
             Drawer result = new DrawerBuilder()
@@ -247,16 +281,23 @@ public class SubSectionActivity extends AppCompatActivity {
                     .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
                     .addDrawerItems(
                             new PrimaryDrawerItem()
+                                    .withName("Главная страница")
+                                    .withIcon(R.drawable.baseline_home_24)
+                                    .withTextColor(Color.WHITE),
+                            new PrimaryDrawerItem()
                                     .withName("Вход")
-                                    .withIcon(R.drawable.ic_baseline_person_24)
+                                    .withIcon(R.drawable.baseline_login_24)
                                     .withTextColor(Color.WHITE)
-                                    .withSetSelected(true)
+                                    .withSetSelected(false)
                     )
+                    .withSelectedItemByPosition(0)
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            Intent intent = new Intent(SubSectionActivity.this, LoginActivity.class);
-                            startActivity(intent);
+                            if(position == 2) {
+                                Intent intent = new Intent(SubSectionActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }
                             return true;
                         }
                     })

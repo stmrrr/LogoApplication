@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "484124763427",
+    "project_id": "logoapplication-1fef5",
+    "storage_bucket": "logoapplication-1fef5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484124763427:android:49dcef388b42750a399896",
+        "android_client_info": {
+          "package_name": "com.example.logoapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484124763427-sc50j56k2i40givghj4fggcbc3tg0odu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxO0IH1RLR0VndJ2Pl_BJoRSQlCH5MN1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484124763427-sc50j56k2i40givghj4fggcbc3tg0odu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

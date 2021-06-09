@@ -7,7 +7,7 @@
     android:gravity="end"
     android:layout_marginLeft="100dp">
     <TextView
-        android:id="@+id/messageID"
+        android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"

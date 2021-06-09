@@ -12,9 +12,10 @@ public class User {
     private String email;
     private String password;
     private String location;
+    private ObjectId teacherId;
     private Date date;
 
-    public User(ObjectId id, String name, String status, Boolean flag, String email, String password, String location, Date date) {
+    public User(ObjectId id, String name, String status, Boolean flag, String email, String password, String location, ObjectId teacherId, Date date) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -22,6 +23,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.location = location;
+        this.teacherId = teacherId;
         this.date = date;
     }
 
@@ -90,6 +92,14 @@ public class User {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public ObjectId getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(ObjectId teacherId) {
+        this.teacherId = teacherId;
     }
 
     @Override

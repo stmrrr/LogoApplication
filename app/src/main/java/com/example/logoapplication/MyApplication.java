@@ -8,6 +8,7 @@ import com.example.logoapplication.adapter.SectionAdapter;
 import com.example.logoapplication.crud.SectionCRUD;
 import com.example.logoapplication.entities.Teacher;
 import com.example.logoapplication.entities.User;
+import com.google.firebase.storage.FirebaseStorage;
 
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -29,6 +30,7 @@ public class MyApplication extends Application {
     public CodecRegistry pojoCodecRegistry;
     public User user;
     public Teacher teacher;
+    public FirebaseStorage firebaseStorage;
 
     private static MyApplication instance;
 
@@ -40,5 +42,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        firebaseStorage = FirebaseStorage.getInstance();
     }
 }

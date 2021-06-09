@@ -41,7 +41,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_person_24"
                 android:hint="Имя">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailLogin"
+                    android:id="@+id/register_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
@@ -55,7 +55,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_person_24"
                 android:hint="Фамилия">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailLogin"
+                    android:id="@+id/register_surname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -76,7 +76,7 @@
                     android:hint="23/04/1000"
                     tools:ignore="MissingConstraints">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/emailLogin"
+                        android:id="@+id/register_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="date"
@@ -90,7 +90,7 @@
                     app:startIconDrawable="@drawable/ic_baseline_location_on_24"
                     android:hint="Город">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/emailLogin"
+                        android:id="@+id/register_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -105,10 +105,11 @@
                 app:startIconDrawable="@drawable/ic_baseline_alternate_email_24"
                 android:hint="EMAIL">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailLogin"
+                    android:id="@+id/register_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
+
                     />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -119,7 +120,7 @@
                 app:startIconDrawable="@drawable/ic_baseline_lock_24"
                 android:hint="Введите пароль">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailLogin"
+                    android:id="@+id/register_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -133,14 +134,14 @@
                 app:startIconDrawable="@drawable/ic_baseline_lock_24"
                 android:hint="Подтвердите пароль">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailLogin"
+                    android:id="@+id/register_repeat_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/studentButton"
+                android:id="@+id/register_button"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="0dp"

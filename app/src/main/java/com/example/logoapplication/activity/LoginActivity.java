@@ -2,6 +2,7 @@ package com.example.logoapplication.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText email;
     TextInputEditText password;
     MaterialButton button;
+    TextView registerButton;
 
     TeacherCRUD.TeacherLoginListener teacherLoginListener = teacher -> {
         MyApplication.getInstance().teacher = teacher;
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.emailLogin);
         password = findViewById(R.id.passwordLogin);
         button = findViewById(R.id.loginButton);
+        registerButton = findViewById(R.id.registerButton);
         button.setOnClickListener(view -> {
             String emailStr = email.getText().toString();
             String passwordStr = password.getText().toString();
@@ -51,6 +54,10 @@ public class LoginActivity extends AppCompatActivity {
                 UserCRUD userCRUD = new UserCRUD(userLoginListener);
                 userCRUD.loginUser(new Document("email", emailStr).append("password", passwordStr));
             }
+        });
+        registerButton.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterTypeActivity.class);
+            startActivity(intent);
         });
     }
 }
