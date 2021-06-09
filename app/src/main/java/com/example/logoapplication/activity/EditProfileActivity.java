@@ -15,6 +15,7 @@ import com.example.logoapplication.entities.Teacher;
 import com.example.logoapplication.entities.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -33,6 +34,7 @@ public class EditProfileActivity extends AppCompatActivity {
     TextInputEditText editPassword;
     TextInputEditText editRepeatPassword;
     MaterialButton editButton;
+    TextInputLayout editAboutT;
 
     UserCRUD.UserLoginListener userLoginListener = new UserCRUD.UserLoginListener() {
         @Override
@@ -61,6 +63,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editPassword = findViewById(R.id.edit_password);
         editRepeatPassword = findViewById(R.id.edit_repeat_password);
         editButton = findViewById(R.id.edit_button);
+        editAboutT = findViewById(R.id.text_input_about);
 
         if(MyApplication.getInstance().user != null){
             fillUserViews();
@@ -68,7 +71,7 @@ public class EditProfileActivity extends AppCompatActivity {
             fillTeacherViews();
         }
 
-        editAbout.setOnClickListener(new View.OnClickListener() {
+        editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editProfile();
@@ -83,6 +86,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editName.setText(name);
         editSurname.setText(surname);
         ((ViewManager)editAbout.getParent()).removeView(editAbout);
+        ((ViewManager)editAboutT.getParent()).removeView(editAboutT);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         editDate.setText(formatter.format(user.getDate()));
         editLocation.setText(user.getLocation());
@@ -120,6 +124,7 @@ public class EditProfileActivity extends AppCompatActivity {
         User user = MyApplication.getInstance().user;
         String name = editName.getText().toString();
         String surname = editSurname.getText().toString();
+        user.setName(name+" "+surname);
         String date = editDate.getText().toString();
         Date date1 = user.getDate();
         try {
@@ -127,11 +132,15 @@ public class EditProfileActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+        user.setDate(date1);
         String location = editLocation.getText().toString();
+        user.setLocation(location);
         String email = editEmail.getText().toString();
+        user.setEmail(email);
         String password = editRepeatPassword.getText().toString();
+        user.setPassword(password);
         ObjectId id = user.getId();
-        Document query = new Document("id", id);
+        Document query = new Document("_id", id);
         Document update = new Document("name", name+" "+surname).append("date", date1).append("location", location)
                 .append("email", email).append("password", password);
         UserCRUD userCRUD = new UserCRUD(userLoginListener);
@@ -139,22 +148,28 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void editTeacher(){
-        User user = MyApplication.getInstance().user;
+        Teacher teacher = MyApplication.getInstance().teacher;
         String name = editName.getText().toString();
         String surname = editSurname.getText().toString();
+        teacher.setName(name+" "+surname);
         String date = editDate.getText().toString();
-        Date date1 = user.getDate();
+        Date date1 = teacher.getDate();
         try {
             date1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(date);
         }catch (Exception e){
             e.printStackTrace();
         }
+        teacher.setDate(date1);
         String location = editLocation.getText().toString();
+        teacher.setLocation(location);
         String email = editEmail.getText().toString();
+        teacher.setEmail(email);
         String password = editRepeatPassword.getText().toString();
+        teacher.setPassword(password);
         String about = editAbout.getText().toString();
-        ObjectId id = user.getId();
-        Document query = new Document("id", id);
+        teacher.setDescription(about);
+        ObjectId id = teacher.getId();
+        Document query = new Document("_id", id);
         Document update = new Document("name", name+" "+surname).append("date", date1).append("location", location)
                 .append("email", email).append("password", password).append("description", about);
         TeacherCRUD teacherCRUD = new TeacherCRUD(teacherLoginListener);
