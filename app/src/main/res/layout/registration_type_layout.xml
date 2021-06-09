@@ -43,7 +43,7 @@
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/purple_200"
-                app:backgroundTintMode="add"></com.google.android.material.button.MaterialButton>
+                app:backgroundTintMode="add" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/teacherButton"
@@ -54,7 +54,7 @@
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/purple_200"
-                app:backgroundTintMode="add"></com.google.android.material.button.MaterialButton>
+                app:backgroundTintMode="add" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
