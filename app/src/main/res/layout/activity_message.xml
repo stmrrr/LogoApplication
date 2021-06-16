@@ -10,14 +10,17 @@
         android:id="@+id/maintoolbar"
         layout="@layout/toolbar_layout">
     </include>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMessages"
         android:layout_width="match_parent"
         android:layout_height="520dp"
+        android:layout_above="@id/textbottom"
+        android:layout_below="@+id/maintoolbar"
+        android:layout_marginTop="0dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp"
-        android:layout_above="@id/textbottom"/>
+        tools:layout_editor_absoluteX="1dp" />
     <androidx.cardview.widget.CardView
         android:id="@+id/textbottom"
         android:layout_width="match_parent"
