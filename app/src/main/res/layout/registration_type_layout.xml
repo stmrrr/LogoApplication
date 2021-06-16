@@ -42,8 +42,9 @@
                 android:text="ПОЛЬЗОВАТЕЛЬ"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/purple_200"
-                app:backgroundTintMode="add" />
+                app:backgroundTint="#126CFE"
+                app:backgroundTintMode="add"
+                android:textColor="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/teacherButton"
@@ -53,8 +54,9 @@
                 android:text="ПРЕПОДАВАТЕЛЬ"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/purple_200"
-                app:backgroundTintMode="add" />
+                app:backgroundTint="#126CFE"
+                app:backgroundTintMode="add"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

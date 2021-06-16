@@ -28,7 +28,7 @@
         android:textColor="@color/grey_light"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="5dp"
-        android:text="hello there"
+        android:text="good evening"
         android:textSize="18dp"
         android:padding="8dp"
         >

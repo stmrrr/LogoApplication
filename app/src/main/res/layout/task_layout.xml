@@ -43,6 +43,8 @@
             android:layout_width="match_parent"
             android:id="@+id/complete_task"
             android:layout_height="60dp"
+            app:backgroundTint="#126CFE"
+            android:textColor="@color/white"
             android:text="Выполнить">
 
         </com.google.android.material.button.MaterialButton>

@@ -8,6 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+
+    <color name="main_blue">#1FC5FC</color>
+    <color name="main_blue_primary">#126CFE</color>
     <color name="purple_main">#8867e9</color>
     <color name="pink">#F18FF3</color>
     <color name="grey_light">#F0F0F0</color>

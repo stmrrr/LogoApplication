@@ -148,7 +148,8 @@
                 android:text="Регистрация"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/purple_200"
+                app:backgroundTint="#126CFE"
+                android:textColor="@color/white"
                 app:backgroundTintMode="add" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
