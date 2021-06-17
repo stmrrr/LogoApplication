@@ -51,7 +51,11 @@ public class ProfileActivity extends AppCompatActivity {
         text_docs = findViewById(R.id.text_doc);
         button = findViewById(R.id.redact_button);
         if(MyApplication.getInstance().user != null){
-            fillUserViews();
+            if(MyApplication.getInstance().user.getStatus().equals("ADMIN")){
+                fillWatchedProfile();
+            } else {
+                fillUserViews();
+            }
         } else {
             fillTeacherViews();
         }
@@ -75,6 +79,42 @@ public class ProfileActivity extends AppCompatActivity {
         userDate.setText(formatter.format(user.getDate()));
         ((ViewManager)userDocs.getParent()).removeView(userDocs);
         ((ViewManager)text_docs.getParent()).removeView(text_docs);
+    }
+
+    private void fillWatchedProfile(){
+        if(MyApplication.getInstance().additionalUserProfile==null){
+            fillWatchedTeacher();
+        } else {
+            fillWatchedUser();
+        }
+        ((ViewManager)button.getParent()).removeView(button);
+    }
+
+    private void fillWatchedUser(){
+        User user = MyApplication.getInstance().additionalUserProfile;
+        userFIO.setText(user.getName());
+        userLocation.setText(user.getLocation());
+        ((ViewManager)userDescription.getParent()).removeView(userDescription);
+        userMail.setText(user.getEmail());
+        userPass.setText(user.getPassword());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        userDate.setText(formatter.format(user.getDate()));
+        ((ViewManager)userDocs.getParent()).removeView(userDocs);
+        ((ViewManager)text_docs.getParent()).removeView(text_docs);
+        MyApplication.getInstance().additionalUserProfile=null;
+    }
+
+    private void fillWatchedTeacher(){
+        Teacher teacher = MyApplication.getInstance().additionalTeacherProfile;
+        userFIO.setText(teacher.getName());
+        userLocation.setText(teacher.getLocation());
+        userDescription.setText(teacher.getDescription());
+        userMail.setText(teacher.getEmail());
+        userPass.setText(teacher.getPassword());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        userDate.setText(formatter.format(teacher.getDate()));
+        downloadPictureForDocs(teacher);
+        MyApplication.getInstance().additionalTeacherProfile=null;
     }
 
     private void fillTeacherViews(){

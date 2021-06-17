@@ -3,6 +3,7 @@ package com.example.logoapplication.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,10 @@ public class LoginActivity extends AppCompatActivity {
     TextView registerButton;
 
     TeacherCRUD.TeacherLoginListener teacherLoginListener = teacher -> {
+        if(teacher == null){
+            Toast.makeText(LoginActivity.this, "Неверное имя пользователя или пароль", Toast.LENGTH_LONG).show();
+            return;
+        }
         MyApplication.getInstance().teacher = teacher;
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);

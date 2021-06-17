@@ -36,19 +36,9 @@ public class EditProfileActivity extends AppCompatActivity {
     MaterialButton editButton;
     TextInputLayout editAboutT;
 
-    UserCRUD.UserLoginListener userLoginListener = new UserCRUD.UserLoginListener() {
-        @Override
-        public void onLogin(User user) {
-            finish();
-        }
-    };
+    UserCRUD.UserLoginListener userLoginListener = user -> finish();
 
-    TeacherCRUD.TeacherLoginListener teacherLoginListener = new TeacherCRUD.TeacherLoginListener() {
-        @Override
-        public void onLogin(Teacher teacher) {
-            finish();
-        }
-    };
+    TeacherCRUD.TeacherLoginListener teacherLoginListener = teacher -> finish();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,7 +132,7 @@ public class EditProfileActivity extends AppCompatActivity {
         ObjectId id = user.getId();
         Document query = new Document("_id", id);
         Document update = new Document("name", name+" "+surname).append("date", date1).append("location", location)
-                .append("email", email).append("password", password);
+                .append("email", email).append("password", password).append("teacherId", user.getTeacherId()).append("status", user.getStatus());
         UserCRUD userCRUD = new UserCRUD(userLoginListener);
         userCRUD.updateUser(query, update);
     }

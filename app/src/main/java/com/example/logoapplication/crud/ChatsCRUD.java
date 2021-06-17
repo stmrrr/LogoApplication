@@ -46,4 +46,23 @@ public class ChatsCRUD {
             }
         });
     }
+
+    public void updateChat(Document query, Document update){
+        MongoCollection<Chat> mongoCollection =
+                MyApplication.getInstance().mongoDatabase.getCollection(
+                        "chat",
+                        Chat.class).withCodecRegistry(MyApplication.getInstance().pojoCodecRegistry);
+        mongoCollection.updateOne(query, update).getAsync(it -> {
+            if(it.isSuccess()){
+                long count = it.get().getModifiedCount();
+                if (count == 1) {
+                    Log.v("EXAMPLE", "successfully updated a document.");
+                } else {
+                    Log.v("EXAMPLE", "did not update a document.");
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to update document with: ", it.getError());
+            }
+        });
+    }
 }

@@ -5,23 +5,23 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewManager;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.logoapplication.MyApplication;
 import com.example.logoapplication.R;
-import com.example.logoapplication.crud.ChatsCRUD;
-import com.example.logoapplication.crud.CompletedTaskCRUD;
-import com.example.logoapplication.crud.MessageCRUD;
-import com.example.logoapplication.entities.Chat;
-import com.example.logoapplication.entities.CompletedTask;
-import com.example.logoapplication.entities.Message;
+import com.example.logoapplication.adapter.UsersAdapter;
+import com.example.logoapplication.crud.TeacherCRUD;
+import com.example.logoapplication.crud.UserCRUD;
 import com.example.logoapplication.entities.Teacher;
-import com.example.logoapplication.entities.User;
-import com.google.android.material.button.MaterialButton;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -31,85 +31,97 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import java.util.List;
-
-public class TaskActivity extends AppCompatActivity {
-    TextView taskName;
-    TextView task;
+public class UserLIstActivity extends AppCompatActivity {
+    CardView selectUsers;
+    CardView selectTeachers;
+    RecyclerView userList;
+    UsersAdapter usersAdapter;
+    UserCRUD userCRUD;
+    TeacherCRUD teacherCRUD;
+    ProgressBar progressBar;
     Toolbar toolbar;
-    MaterialButton materialButton;
-    String description;
-    ObjectId id;
-    ChatsCRUD chatsCRUD;
 
-    ChatsCRUD.OnChatChange chatChange = new ChatsCRUD.OnChatChange() {
-        @Override
-        public void onChange(List<Chat> chat) {
-            for (Chat chat1 : chat) {
-                if (chat1.getId_teacher().equals(MyApplication.getInstance().user.getTeacherId())) {
-                    ObjectId id = chat1.getId();
-                    chatsCRUD.updateChat(new Document("_id", id), new Document("id_user", chat1.getId_user())
-                        .append("id_teacher", chat1.getId_teacher()).append("access", true));
-                    MessageCRUD messageCRUD = new MessageCRUD(null, null);
-                    messageCRUD.insertMessage(new Message(
-                            new ObjectId(),
-                            id,
-                            "Ваш ученик закончил упражнение \"" + description.substring(0, 50) + "...\"",
-                            MyApplication.getInstance().user.getId(),
-                            chat1.getId_teacher(),
-                            ""
-                    ));
-                }
-            }
+    UsersAdapter.OnDeleteUserListener onDeleteUserListener = position -> {
+        if(usersAdapter.getUsers().size()==0){
+            Teacher teacher = usersAdapter.getTeachers().get(position);
+            teacherCRUD.deleteTeacher(teacher.getId(), teacher1 -> {
+                progressBar.setVisibility(View.VISIBLE);
+                userList.setVisibility(View.GONE);
+                teacherCRUD.getAllTeachers(teachers -> {
+                    progressBar.setVisibility(View.GONE);
+                    usersAdapter.setTeachers(teachers);
+                    userList.setVisibility(View.VISIBLE);
+                });
+            });
+        } else {
+            ObjectId userId = usersAdapter.getUsers().get(position).getId();
+            userCRUD.deleteUser(userId, user -> {
+                progressBar.setVisibility(View.VISIBLE);
+                userList.setVisibility(View.GONE);
+                userCRUD.getAllUsers(users -> {
+                    progressBar.setVisibility(View.GONE);
+                    usersAdapter.setUsers(users);
+                    userList.setVisibility(View.VISIBLE);
+                });
+            });
         }
     };
 
+    UsersAdapter.OnClickUser onClickUser = position -> {
+        Intent intent = new Intent(UserLIstActivity.this, ProfileActivity.class);
+        if(usersAdapter.getUsers().size()==0){
+            MyApplication.getInstance().additionalTeacherProfile = usersAdapter.getTeachers().get(position);
+        } else {
+            MyApplication.getInstance().additionalUserProfile = usersAdapter.getUsers().get(position);
+        }
+        startActivity(intent);
+    };
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.task_layout);
-        taskName = findViewById(R.id.taskName);
-        task = findViewById(R.id.task);
-        toolbar = findViewById(R.id.task_toolbar);
-        materialButton = findViewById(R.id.complete_task);
-        id = (ObjectId) getIntent().getSerializableExtra("id");
-        boolean flag = getIntent().getBooleanExtra("flag", false);
+        setContentView(R.layout.userlist_layout);
+        selectUsers = findViewById(R.id.selectUsers);
+        progressBar = findViewById(R.id.loading_spinner);
+        selectTeachers = findViewById(R.id.selectTeachers);
+        userList = findViewById(R.id.recyclerViewUsers);
+        userList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        userList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        usersAdapter = new UsersAdapter(onDeleteUserListener, onClickUser);
+        userList.setAdapter(usersAdapter);
+        userCRUD = new UserCRUD(null);
+        teacherCRUD = new TeacherCRUD(null);
+        userCRUD.getAllUsers(users -> {
+            progressBar.setVisibility(View.GONE);
+            userList.setVisibility(View.VISIBLE);
+            usersAdapter.setUsers(users);
+        });
+        selectUsers.setOnClickListener(view -> {
+            progressBar.setVisibility(View.VISIBLE);
+            userList.setVisibility(View.GONE);
+            userCRUD.getAllUsers(users -> {
+                progressBar.setVisibility(View.GONE);
+                usersAdapter.setUsers(users);
+                userList.setVisibility(View.VISIBLE);
+            });
+        });
+        selectTeachers.setOnClickListener(view -> {
+            progressBar.setVisibility(View.VISIBLE);
+            userList.setVisibility(View.GONE);
+            teacherCRUD.getAllTeachers(teachers -> {
+                progressBar.setVisibility(View.GONE);
+                usersAdapter.setTeachers(teachers);
+                userList.setVisibility(View.VISIBLE);
+            });
+        });
+        toolbar = findViewById(R.id.maintoolbar);
         if (toolbar != null) {
-            toolbar.setTitle("Упражнение");
+            toolbar.setTitle("Главное меню");
             setSupportActionBar(toolbar);
             initializeMenu();
         }
-        if (MyApplication.getInstance().user == null) {
-            ((ViewManager) materialButton.getParent()).removeView(materialButton);
-        } else {
-            if (!flag) {
-                materialButton.setOnClickListener(view -> completeTask());
-            } else {
-                materialButton.setText("Выполнено");
-            }
-        }
-        String name = getIntent().getStringExtra("name");
-        description = getIntent().getStringExtra("description");
-        taskName.setText(name);
-        task.setText(description);
-    }
-
-    private void completeTask() {
-        CompletedTaskCRUD completedTaskCRUD = new CompletedTaskCRUD(completedTask -> {
-            materialButton.setText("Выполнено");
-            chatsCRUD = new ChatsCRUD(chatChange);
-            chatsCRUD.getChatsByProfile(new Document("id_user", MyApplication.getInstance().user.getId()));
-            materialButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                }
-            });
-        });
-        completedTaskCRUD.updateTaskStatus(new Document("userId", MyApplication.getInstance().user.getId()).append("taskId", id),
-                new Document("userId", MyApplication.getInstance().user.getId()).append("taskId", id).append("status", "completed"));
     }
 
     public void initializeMenu() {
@@ -149,12 +161,13 @@ public class TaskActivity extends AppCompatActivity {
                                 new PrimaryDrawerItem()
                                         .withName("Главная страница")
                                         .withIcon(R.drawable.baseline_home_24)
-                                        .withTextColor(Color.WHITE),
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
                                 new PrimaryDrawerItem()
                                         .withName("Пользователи")
                                         .withIcon(R.drawable.ic_baseline_person_24)
                                         .withTextColor(Color.WHITE)
-                                        .withSetSelected(false),
+                                        .withSetSelected(true),
                                 new PrimaryDrawerItem()
                                         .withName("Чаты")
                                         .withIcon(R.drawable.ic_baseline_chat_24)
@@ -170,22 +183,22 @@ public class TaskActivity extends AppCompatActivity {
                             @Override
                             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                                 Log.v("AUTH", String.valueOf(position));
-                                if (position == 1) {
-                                    Intent intent = new Intent(TaskActivity.this, MainActivity.class);
+                                if(position == 1) {
+                                    Intent intent = new Intent(UserLIstActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }
                                 if(position == 2){
-                                    Intent intent = new Intent(TaskActivity.this, UserLIstActivity.class);
+                                    Intent intent = new Intent(UserLIstActivity.this, UserLIstActivity.class);
                                     startActivity(intent);
                                 }
                                 if(position == 3){
-                                    Intent intent = new Intent(TaskActivity.this, ChatListActivity.class);
+                                    Intent intent = new Intent(UserLIstActivity.this, ChatListActivity.class);
                                     startActivity(intent);
                                 }
                                 if(position == 4){
                                     MyApplication.getInstance().user = null;
                                     MyApplication.getInstance().teacher = null;
-                                    Intent intent = new Intent(TaskActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(UserLIstActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }
                                 return true;
@@ -209,12 +222,12 @@ public class TaskActivity extends AppCompatActivity {
                                         .withName("Личный кабинет")
                                         .withIcon(R.drawable.ic_baseline_person_24)
                                         .withTextColor(Color.WHITE)
-                                        .withSetSelected(false),
+                                        .withSetSelected(true),
                                 new PrimaryDrawerItem()
                                         .withName("Чаты")
                                         .withIcon(R.drawable.ic_baseline_chat_24)
                                         .withTextColor(Color.WHITE)
-                                        .withSetSelected(true),
+                                        .withSetSelected(false),
                                 new PrimaryDrawerItem()
                                         .withName("Выход")
                                         .withIcon(R.drawable.ic_logout)
@@ -225,22 +238,22 @@ public class TaskActivity extends AppCompatActivity {
                             @Override
                             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                                 Log.v("AUTH", String.valueOf(position));
-                                if (position == 1) {
-                                    Intent intent = new Intent(TaskActivity.this, MainActivity.class);
+                                if(position == 1) {
+                                    Intent intent = new Intent(UserLIstActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }
                                 if (position == 2) {
-                                    Intent intent = new Intent(TaskActivity.this, ProfileActivity.class);
+                                    Intent intent = new Intent(UserLIstActivity.this, ProfileActivity.class);
                                     startActivity(intent);
                                 }
                                 if (position == 3) {
-                                    Intent intent = new Intent(TaskActivity.this, ChatListActivity.class);
+                                    Intent intent = new Intent(UserLIstActivity.this, ChatListActivity.class);
                                     startActivity(intent);
                                 }
                                 if (position == 4) {
                                     MyApplication.getInstance().user = null;
                                     MyApplication.getInstance().teacher = null;
-                                    Intent intent = new Intent(TaskActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(UserLIstActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }
                                 return true;
@@ -270,8 +283,8 @@ public class TaskActivity extends AppCompatActivity {
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            if (position == 2) {
-                                Intent intent = new Intent(TaskActivity.this, LoginActivity.class);
+                            if(position == 2) {
+                                Intent intent = new Intent(UserLIstActivity.this, LoginActivity.class);
                                 startActivity(intent);
                             }
                             return true;

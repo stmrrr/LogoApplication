@@ -8,13 +8,15 @@ public class Message {
     private String text;
     private ObjectId from;
     private ObjectId to;
+    private String attachment;
 
-    public Message(ObjectId id, ObjectId chat_id, String text, ObjectId from, ObjectId to) {
+    public Message(ObjectId id, ObjectId chat_id, String text, ObjectId from, ObjectId to, String attachment) {
         this.id = id;
         this.chat_id = chat_id;
         this.text = text;
         this.from = from;
         this.to = to;
+        this.attachment = attachment;
     }
 
     public Message() {
@@ -58,6 +60,14 @@ public class Message {
 
     public void setTo(ObjectId to) {
         this.to = to;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 
     @Override

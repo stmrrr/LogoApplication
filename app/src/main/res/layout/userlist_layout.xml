@@ -10,12 +10,6 @@
         android:id="@+id/maintoolbar"
         layout="@layout/toolbar_layout">
     </include>
-
-    <ProgressBar
-        android:id="@+id/loading_spinner"
-        android:layout_width="102dp"
-        android:layout_height="89dp"
-        android:layout_gravity="center"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -24,6 +18,7 @@
                 android:layout_margin="10dp"
                 android:padding="10dp">
                 <android.support.v7.widget.CardView
+                    android:id="@+id/selectUsers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="15dp"
@@ -42,6 +37,7 @@
                         />
                 </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView
+                    android:id="@+id/selectTeachers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="15dp">
@@ -58,7 +54,11 @@
                         />
                 </android.support.v7.widget.CardView>
             </LinearLayout>
-
+    <ProgressBar
+        android:id="@+id/loading_spinner"
+        android:layout_width="102dp"
+        android:layout_height="89dp"
+        android:layout_gravity="center"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUsers"
         android:layout_width="match_parent"

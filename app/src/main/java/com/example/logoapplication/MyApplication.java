@@ -31,6 +31,8 @@ public class MyApplication extends Application {
     public User user;
     public Teacher teacher;
     public FirebaseStorage firebaseStorage;
+    public User additionalUserProfile;
+    public Teacher additionalTeacherProfile;
 
     private static MyApplication instance;
 

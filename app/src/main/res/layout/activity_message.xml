@@ -15,29 +15,51 @@
         android:id="@+id/recyclerViewMessages"
         android:layout_width="match_parent"
         android:layout_height="520dp"
-        android:layout_above="@id/textbottom"
+        android:layout_above="@id/bottom_part"
         android:layout_below="@+id/maintoolbar"
         android:layout_marginTop="0dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="1dp" />
-    <androidx.cardview.widget.CardView
-        android:id="@+id/textbottom"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/bottom_part"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="5dp">
-        <LinearLayout
+        android:orientation="vertical">
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:id="@+id/accessButton"
+            android:textColor="@color/white"
+            android:text="Разблокировать следующее упражнение"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:backgroundTint="#126CFE"
+            android:visibility="gone">
+        </com.google.android.material.button.MaterialButton>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/textbottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:background="@color/white">
-
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:background="@color/white">
+                <ImageButton
+                    android:id="@+id/selectFile"
+                    android:layout_height="50dp"
+                    android:layout_width="50dp"
+                    android:src="@drawable/ic_baseline_attach_file_24"/>
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/m"
-                    android:layout_width="340dp"
+                    android:layout_width="285dp"
                     android:layout_height="wrap_content"
                     android:textSize="15dp"
                     android:layout_marginTop="7dp"
@@ -47,6 +69,7 @@
                     android:layout_height="50dp"
                     android:layout_width="50dp"
                     android:src="@drawable/ic_baseline_send_24"/>
-        </LinearLayout>
-</androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>

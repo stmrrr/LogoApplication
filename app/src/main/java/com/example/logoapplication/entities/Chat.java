@@ -6,11 +6,13 @@ public class Chat {
     private ObjectId id;
     private ObjectId id_user;
     private ObjectId id_teacher;
+    private Boolean access;
 
-    public Chat (ObjectId id, ObjectId id_user, ObjectId id_teacher) {
+    public Chat(ObjectId id, ObjectId id_user, ObjectId id_teacher, Boolean access) {
         this.id = id;
         this.id_user = id_user;
         this.id_teacher = id_teacher;
+        this.access = access;
     }
 
     public Chat() {
@@ -38,6 +40,14 @@ public class Chat {
 
     public void setId_teacher(ObjectId id_teacher) {
         this.id_teacher = id_teacher;
+    }
+
+    public Boolean getAccess() {
+        return access;
+    }
+
+    public void setAccess(Boolean access) {
+        this.access = access;
     }
 
     @Override

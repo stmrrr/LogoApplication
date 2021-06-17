@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.logoapplication.MyApplication;
 import com.example.logoapplication.R;
 import com.example.logoapplication.adapter.ExercisesAdapter;
+import com.example.logoapplication.crud.CompletedTaskCRUD;
 import com.example.logoapplication.crud.ExerciseCRUD;
+import com.example.logoapplication.entities.CompletedTask;
 import com.example.logoapplication.entities.Exercise;
 import com.example.logoapplication.entities.Teacher;
 import com.example.logoapplication.entities.User;
@@ -43,22 +45,29 @@ public class ExercisesActivity extends AppCompatActivity {
     ExercisesAdapter exercisesAdapter;
     Toolbar toolbar;
     ProgressBar progressBar;
+    List<CompletedTask> completedTasks;
 
     ExercisesAdapter.ExerciseOnClickListener exerciseOnClickListener = new ExercisesAdapter.ExerciseOnClickListener() {
         @Override
-        public void onClickExercise(int position) {
+        public void onClickExercise(int position, boolean flag) {
             Exercise exercise = exercisesAdapter.getExercise(position);
-            openExercise(exercise);
+            openExercise(exercise, flag);
         }
     };
 
     ExerciseCRUD.ExerciseOnChangeListener exerciseOnChangeListener = new ExerciseCRUD.ExerciseOnChangeListener() {
         @Override
         public void onChange(List<Exercise> exercises) {
-            recyclerView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.INVISIBLE);
-            ((ViewManager) progressBar.getParent()).removeView(progressBar);
-            exercisesAdapter.setExercises(exercises);
+            CompletedTaskCRUD completedTaskCRUD = new CompletedTaskCRUD(completedTask -> {
+                exercisesAdapter.setCompletedTasks(completedTask);
+                completedTasks = completedTask;
+                recyclerView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+                ((ViewManager) progressBar.getParent()).removeView(progressBar);
+                exercisesAdapter.setExercises(exercises);
+            });
+            ObjectId userId = MyApplication.getInstance().user!=null?MyApplication.getInstance().user.getId():new ObjectId();
+            completedTaskCRUD.getCompletedTaskByUser(userId);
         }
     };
 
@@ -111,60 +120,116 @@ public class ExercisesActivity extends AppCompatActivity {
                 .withTextColor(Color.WHITE)
                 .build();
         if (user != null || teacher != null) {
-            Drawer result = new DrawerBuilder()
-                    .withActivity(this)
-                    .withToolbar(toolbar)
-                    .withAccountHeader(accountHeader)
-                    .withActionBarDrawerToggleAnimated(true)
-                    .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
-                    .addDrawerItems(
-                            new PrimaryDrawerItem()
-                                    .withName("Главная страница")
-                                    .withIcon(R.drawable.baseline_home_24)
-                                    .withTextColor(Color.WHITE)
-                                    .withSetSelected(false),
-                            new PrimaryDrawerItem()
-                                    .withName("Личный кабинет")
-                                    .withIcon(R.drawable.ic_baseline_person_24)
-                                    .withTextColor(Color.WHITE)
-                                    .withSetSelected(false),
-                            new PrimaryDrawerItem()
-                                    .withName("Чаты")
-                                    .withIcon(R.drawable.ic_baseline_chat_24)
-                                    .withTextColor(Color.WHITE)
-                                    .withSetSelected(false),
-                            new PrimaryDrawerItem()
-                                    .withName("Выход")
-                                    .withIcon(R.drawable.ic_logout)
-                                    .withTextColor(Color.WHITE)
-                                    .withSetSelected(false)
-                    )
-                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                        @Override
-                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            Log.v("AUTH", String.valueOf(position));
-                            if(position == 1){
-                                Intent intent = new Intent(ExercisesActivity.this, MainActivity.class);
-                                startActivity(intent);
+            if(user!=null && user.getStatus().equals("ADMIN")){
+                Drawer result = new DrawerBuilder()
+                        .withActivity(this)
+                        .withToolbar(toolbar)
+                        .withAccountHeader(accountHeader)
+                        .withActionBarDrawerToggleAnimated(true)
+                        .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
+                        .addDrawerItems(
+                                new PrimaryDrawerItem()
+                                        .withName("Главная страница")
+                                        .withIcon(R.drawable.baseline_home_24)
+                                        .withTextColor(Color.WHITE),
+                                new PrimaryDrawerItem()
+                                        .withName("Пользователи")
+                                        .withIcon(R.drawable.ic_baseline_person_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
+                                new PrimaryDrawerItem()
+                                        .withName("Чаты")
+                                        .withIcon(R.drawable.ic_baseline_chat_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
+                                new PrimaryDrawerItem()
+                                        .withName("Выход")
+                                        .withIcon(R.drawable.ic_logout)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false)
+                        )
+                        .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                            @Override
+                            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                                Log.v("AUTH", String.valueOf(position));
+                                if (position == 1) {
+                                    Intent intent = new Intent(ExercisesActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                if(position == 2){
+                                    Intent intent = new Intent(ExercisesActivity.this, UserLIstActivity.class);
+                                    startActivity(intent);
+                                }
+                                if(position == 3){
+                                    Intent intent = new Intent(ExercisesActivity.this, ChatListActivity.class);
+                                    startActivity(intent);
+                                }
+                                if(position == 4){
+                                    MyApplication.getInstance().user = null;
+                                    MyApplication.getInstance().teacher = null;
+                                    Intent intent = new Intent(ExercisesActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                return true;
                             }
-                            if(position == 2){
-                                Intent intent = new Intent(ExercisesActivity.this, ProfileActivity.class);
-                                startActivity(intent);
+                        })
+                        .build();
+            } else {
+                Drawer result = new DrawerBuilder()
+                        .withActivity(this)
+                        .withToolbar(toolbar)
+                        .withAccountHeader(accountHeader)
+                        .withActionBarDrawerToggleAnimated(true)
+                        .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
+                        .addDrawerItems(
+                                new PrimaryDrawerItem()
+                                        .withName("Главная страница")
+                                        .withIcon(R.drawable.baseline_home_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
+                                new PrimaryDrawerItem()
+                                        .withName("Личный кабинет")
+                                        .withIcon(R.drawable.ic_baseline_person_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
+                                new PrimaryDrawerItem()
+                                        .withName("Чаты")
+                                        .withIcon(R.drawable.ic_baseline_chat_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(true),
+                                new PrimaryDrawerItem()
+                                        .withName("Выход")
+                                        .withIcon(R.drawable.ic_logout)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false)
+                        )
+                        .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                            @Override
+                            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                                Log.v("AUTH", String.valueOf(position));
+                                if (position == 1) {
+                                    Intent intent = new Intent(ExercisesActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                if (position == 2) {
+                                    Intent intent = new Intent(ExercisesActivity.this, ProfileActivity.class);
+                                    startActivity(intent);
+                                }
+                                if (position == 3) {
+                                    Intent intent = new Intent(ExercisesActivity.this, ChatListActivity.class);
+                                    startActivity(intent);
+                                }
+                                if (position == 4) {
+                                    MyApplication.getInstance().user = null;
+                                    MyApplication.getInstance().teacher = null;
+                                    Intent intent = new Intent(ExercisesActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                return true;
                             }
-                            if(position == 3){
-                                Intent intent = new Intent(ExercisesActivity.this, ChatListActivity.class);
-                                startActivity(intent);
-                            }
-                            if(position == 4){
-                                MyApplication.getInstance().user = null;
-                                MyApplication.getInstance().teacher = null;
-                                Intent intent = new Intent(ExercisesActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }
-                            return true;
-                        }
-                    })
-                    .build();
+                        })
+                        .build();
+            }
         } else {
             Drawer result = new DrawerBuilder()
                     .withActivity(this)
@@ -198,10 +263,11 @@ public class ExercisesActivity extends AppCompatActivity {
         }
     }
 
-    public void openExercise(Exercise exercise) {
+    public void openExercise(Exercise exercise, boolean flag) {
         Intent intent = new Intent(ExercisesActivity.this, TaskActivity.class);
         intent.putExtra("name", "Упражнение " + exercise.getNumber());
         intent.putExtra("description", exercise.getDescription());
+        intent.putExtra("flag", flag);
         intent.putExtra("id", exercise.getId());
         startActivity(intent);
     }

@@ -53,6 +53,7 @@ public class ChatListActivity extends AppCompatActivity {
             }else {
                 intent.putExtra("receiver", chat.getId_user());
             }
+            intent.putExtra("access", chat.getAccess().booleanValue());
             startActivity(intent);
         }
     };
@@ -118,60 +119,117 @@ public class ChatListActivity extends AppCompatActivity {
                 .withTextColor(Color.WHITE)
                 .build();
         if (user != null || teacher != null) {
-            Drawer result = new DrawerBuilder()
-                    .withActivity(this)
-                    .withToolbar(toolbar)
-                    .withAccountHeader(accountHeader)
-                    .withActionBarDrawerToggleAnimated(true)
-                    .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
-                    .addDrawerItems(
-                            new PrimaryDrawerItem()
-                                    .withName("Главная страница")
-                                    .withIcon(R.drawable.baseline_home_24)
-                                    .withTextColor(Color.WHITE)
-                                    .withSetSelected(false),
-                            new PrimaryDrawerItem()
-                                    .withName("Личный кабинет")
-                                    .withIcon(R.drawable.ic_baseline_person_24)
-                                    .withTextColor(Color.WHITE)
-                                    .withSetSelected(false),
-                            new PrimaryDrawerItem()
-                                    .withName("Чаты")
-                                    .withIcon(R.drawable.ic_baseline_chat_24)
-                                    .withTextColor(Color.WHITE)
-                                    .withSetSelected(true),
-                            new PrimaryDrawerItem()
-                                    .withName("Выход")
-                                    .withIcon(R.drawable.ic_logout)
-                                    .withTextColor(Color.WHITE)
-                                    .withSetSelected(false)
-                    )
-                    .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                        @Override
-                        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                            Log.v("AUTH", String.valueOf(position));
-                            if(position == 1){
-                                Intent intent = new Intent(ChatListActivity.this, MainActivity.class);
-                                startActivity(intent);
+            if(user!=null && user.getStatus().equals("ADMIN")){
+                Drawer result = new DrawerBuilder()
+                        .withActivity(this)
+                        .withToolbar(toolbar)
+                        .withAccountHeader(accountHeader)
+                        .withActionBarDrawerToggleAnimated(true)
+                        .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
+                        .addDrawerItems(
+                                new PrimaryDrawerItem()
+                                        .withName("Главная страница")
+                                        .withIcon(R.drawable.baseline_home_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
+                                new PrimaryDrawerItem()
+                                        .withName("Пользователи")
+                                        .withIcon(R.drawable.ic_baseline_person_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
+                                new PrimaryDrawerItem()
+                                        .withName("Чаты")
+                                        .withIcon(R.drawable.ic_baseline_chat_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(true),
+                                new PrimaryDrawerItem()
+                                        .withName("Выход")
+                                        .withIcon(R.drawable.ic_logout)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false)
+                        )
+                        .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                            @Override
+                            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                                Log.v("AUTH", String.valueOf(position));
+                                if (position == 1) {
+                                    Intent intent = new Intent(ChatListActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                if(position == 2){
+                                    Intent intent = new Intent(ChatListActivity.this, UserLIstActivity.class);
+                                    startActivity(intent);
+                                }
+                                if(position == 3){
+                                    Intent intent = new Intent(ChatListActivity.this, ChatListActivity.class);
+                                    startActivity(intent);
+                                }
+                                if(position == 4){
+                                    MyApplication.getInstance().user = null;
+                                    MyApplication.getInstance().teacher = null;
+                                    Intent intent = new Intent(ChatListActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                return true;
                             }
-                            if(position == 2){
-                                Intent intent = new Intent(ChatListActivity.this, ProfileActivity.class);
-                                startActivity(intent);
+                        })
+                        .build();
+            } else {
+                Drawer result = new DrawerBuilder()
+                        .withActivity(this)
+                        .withToolbar(toolbar)
+                        .withAccountHeader(accountHeader)
+                        .withActionBarDrawerToggleAnimated(true)
+                        .withSliderBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_main))
+                        .addDrawerItems(
+                                new PrimaryDrawerItem()
+                                        .withName("Главная страница")
+                                        .withIcon(R.drawable.baseline_home_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
+                                new PrimaryDrawerItem()
+                                        .withName("Личный кабинет")
+                                        .withIcon(R.drawable.ic_baseline_person_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false),
+                                new PrimaryDrawerItem()
+                                        .withName("Чаты")
+                                        .withIcon(R.drawable.ic_baseline_chat_24)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(true),
+                                new PrimaryDrawerItem()
+                                        .withName("Выход")
+                                        .withIcon(R.drawable.ic_logout)
+                                        .withTextColor(Color.WHITE)
+                                        .withSetSelected(false)
+                        )
+                        .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                            @Override
+                            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                                Log.v("AUTH", String.valueOf(position));
+                                if (position == 1) {
+                                    Intent intent = new Intent(ChatListActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                if (position == 2) {
+                                    Intent intent = new Intent(ChatListActivity.this, ProfileActivity.class);
+                                    startActivity(intent);
+                                }
+                                if (position == 3) {
+                                    Intent intent = new Intent(ChatListActivity.this, ChatListActivity.class);
+                                    startActivity(intent);
+                                }
+                                if (position == 4) {
+                                    MyApplication.getInstance().user = null;
+                                    MyApplication.getInstance().teacher = null;
+                                    Intent intent = new Intent(ChatListActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                                return true;
                             }
-                            if(position == 3){
-                                Intent intent = new Intent(ChatListActivity.this, ChatListActivity.class);
-                                startActivity(intent);
-                            }
-                            if(position == 4){
-                                MyApplication.getInstance().user = null;
-                                MyApplication.getInstance().teacher = null;
-                                Intent intent = new Intent(ChatListActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }
-                            return true;
-                        }
-                    })
-                    .build();
+                        })
+                        .build();
+            }
         } else {
             Drawer result = new DrawerBuilder()
                     .withActivity(this)

@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#126CFE"
+    android:background="@color/main_blue_primary"
     android:orientation="horizontal"
-    app:TextColor="@color/white"
     android:id="@+id/maintoolbar">
 </androidx.appcompat.widget.Toolbar>
