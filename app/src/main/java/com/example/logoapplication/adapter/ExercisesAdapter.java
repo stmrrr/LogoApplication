@@ -55,7 +55,12 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
                         });
                         String titles = "Упражнение " + exercise.getNumber();
                         title.setText(titles);
-                        String descriptionStr = exercise.getDescription().substring(0, 100) + "...";
+                        String descriptionStr;
+                        if(exercise.getDescription().length()<100){
+                            descriptionStr = exercise.getDescription();
+                        } else {
+                            descriptionStr = exercise.getDescription().substring(0, 100) + "...";
+                        }
                         description.setText(descriptionStr);
                         flag = true;
                         break;
@@ -65,7 +70,12 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
             if(MyApplication.getInstance().teacher!=null){
                 String titles = "Упражнение " + exercise.getNumber();
                 title.setText(titles);
-                String descriptionStr = exercise.getDescription().substring(0, 100) + "...";
+                String descriptionStr;
+                if(exercise.getDescription().length()<100){
+                    descriptionStr = exercise.getDescription();
+                } else {
+                    descriptionStr = exercise.getDescription().substring(0, 100) + "...";
+                }
                 description.setText(descriptionStr);
                 cardView.setOnClickListener(v -> {
                     if (exerciseOnClickListener != null) {

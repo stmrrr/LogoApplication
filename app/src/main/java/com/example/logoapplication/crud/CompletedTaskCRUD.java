@@ -54,7 +54,9 @@ public class CompletedTaskCRUD {
                 long count = it.get().getModifiedCount();
                 if (count == 1) {
                     Log.v("EXAMPLE", "successfully updated a document.");
-                    listener.onComplete(null);
+                    if(listener!=null) {
+                        listener.onComplete(null);
+                    }
                 } else {
                     Log.v("EXAMPLE", "did not update a document.");
                 }
