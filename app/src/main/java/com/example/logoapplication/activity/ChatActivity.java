@@ -228,7 +228,15 @@ public class ChatActivity extends AppCompatActivity {
     private void getAccess() {
         ObjectId to = (ObjectId) getIntent().getSerializableExtra("receiver");
         CompletedTaskCRUD completedTaskCRUD = new CompletedTaskCRUD(completedTasks -> {
-            CompletedTask lastTask = completedTasks.get(completedTasks.size() - 1);
+            CompletedTask lastTask = null;
+            for(CompletedTask completedTask : completedTasks){
+                if(completedTask.getStatus().equals("completed")){
+                    lastTask = completedTask;
+                }
+            }
+            if(lastTask == null){
+                lastTask = completedTasks.get(completedTasks.size()-1);
+            }
             ObjectId lastTaskId = lastTask.getTaskId();
             ExerciseCRUD exerciseCRUD = new ExerciseCRUD(exercises -> {
                 Exercise exercise = exercises.get(0);
