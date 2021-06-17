@@ -230,36 +230,39 @@ public class ChatActivity extends AppCompatActivity {
         CompletedTaskCRUD completedTaskCRUD = new CompletedTaskCRUD(completedTasks -> {
             CompletedTask lastTask = null;
             for(CompletedTask completedTask : completedTasks){
-                if(completedTask.getStatus().equals("completed")){
+                if(completedTask.getModified()){
                     lastTask = completedTask;
                 }
             }
-            if(lastTask == null){
-                lastTask = completedTasks.get(completedTasks.size()-1);
-            }
-            ObjectId lastTaskId = lastTask.getTaskId();
-            ExerciseCRUD exerciseCRUD = new ExerciseCRUD(exercises -> {
-                Exercise exercise = exercises.get(0);
-                ExerciseCRUD exerciseCRUD1 = new ExerciseCRUD(exercises1 -> {
-                    if(exercises1.size()!=0) {
-                        Exercise exercise1 = exercises1.get(0);
-                        CompletedTask completedTask = new CompletedTask(
-                                new ObjectId(),
-                                exercise1.getId(),
-                                to,
-                                "uncomleted"
-                        );
-                        CompletedTaskCRUD completedTaskCRUD1 = new CompletedTaskCRUD(null);
-                        completedTaskCRUD1.insertCompletedTask(completedTask);
-                        ChatsCRUD chatsCRUD = new ChatsCRUD(null);
-                        chatsCRUD.updateChat(new Document("_id", id), new Document("id_user", to)
-                                .append("id_teacher", MyApplication.getInstance().teacher.getId()).append("access", false));
-                    }
+            if(lastTask!=null) {
+                final CompletedTask lastestTask = lastTask;
+                ObjectId lastTaskId = lastTask.getTaskId();
+                ExerciseCRUD exerciseCRUD = new ExerciseCRUD(exercises -> {
+                    Exercise exercise = exercises.get(0);
+                    ExerciseCRUD exerciseCRUD1 = new ExerciseCRUD(exercises1 -> {
+                        if (exercises1.size() != 0) {
+                            Exercise exercise1 = exercises1.get(0);
+                            CompletedTask completedTask = new CompletedTask(
+                                    new ObjectId(),
+                                    exercise1.getId(),
+                                    to,
+                                    "uncomleted",
+                                    false
+                            );
+                            CompletedTaskCRUD completedTaskCRUD1 = new CompletedTaskCRUD(null);
+                            completedTaskCRUD1.insertCompletedTask(completedTask);
+                            completedTaskCRUD1.updateTaskStatus(new Document("userId", lastestTask.getUserId()).append("taskId", lastestTask.getTaskId()),
+                                    new Document("userId", lastestTask.getUserId()).append("taskId", lastestTask.getTaskId()).append("status", "completed").append("modified", false));
+                            ChatsCRUD chatsCRUD = new ChatsCRUD(null);
+                            chatsCRUD.updateChat(new Document("_id", id), new Document("id_user", to)
+                                    .append("id_teacher", MyApplication.getInstance().teacher.getId()).append("access", false));
+                        }
+                    });
+                    exerciseCRUD1.getExercise(new Document("number", exercise.getNumber() + 1)
+                            .append("subsectionID", exercise.getSubsectionID()));
                 });
-                exerciseCRUD1.getExercise(new Document("number", exercise.getNumber() + 1)
-                        .append("subsectionID", exercise.getSubsectionID()));
-            });
-            exerciseCRUD.getExercise(new Document("_id", lastTaskId));
+                exerciseCRUD.getExercise(new Document("_id", lastTaskId));
+            }
         });
         completedTaskCRUD.getCompletedTaskByUser(to);
         accessButton.setVisibility(View.GONE);

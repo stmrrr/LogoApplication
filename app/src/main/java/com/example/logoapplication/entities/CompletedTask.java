@@ -7,12 +7,14 @@ public class CompletedTask {
     private ObjectId taskId;
     private ObjectId userId;
     private String status;
+    private Boolean modified;
 
-    public CompletedTask(ObjectId id, ObjectId taskId, ObjectId userId, String status) {
+    public CompletedTask(ObjectId id, ObjectId taskId, ObjectId userId, String status, Boolean modified) {
         this.id = id;
         this.taskId = taskId;
         this.userId = userId;
         this.status = status;
+        this.modified = modified;
     }
 
     public CompletedTask() {
@@ -48,5 +50,13 @@ public class CompletedTask {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Boolean getModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
     }
 }

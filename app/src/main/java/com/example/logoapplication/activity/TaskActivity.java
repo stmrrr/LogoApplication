@@ -109,7 +109,7 @@ public class TaskActivity extends AppCompatActivity {
             });
         });
         completedTaskCRUD.updateTaskStatus(new Document("userId", MyApplication.getInstance().user.getId()).append("taskId", id),
-                new Document("userId", MyApplication.getInstance().user.getId()).append("taskId", id).append("status", "completed"));
+                new Document("userId", MyApplication.getInstance().user.getId()).append("taskId", id).append("status", "completed").append("modified", true));
     }
 
     public void initializeMenu() {
